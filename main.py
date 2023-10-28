@@ -47,7 +47,9 @@ def createSomething(name, asset, PosNextX, PosNextY, ScaleNextX, ScaleNextY, cli
     if clickable == True:
         addClickableObject(name, tempOB, PosNextX, PosNextY, ScaleNextX, ScaleNextY)
 
-#Textures
+
+
+#Fields
 
 createSomething("Feld1", 'assets/Board/temp_house.jpg', 100, 100, 200, 200, True)
 createSomething("Feld2", 'assets/Board/temp_house.jpg', 305, 100, 200, 200, True)
