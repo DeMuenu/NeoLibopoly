@@ -9,6 +9,8 @@ import threading
 import socket
 import time
 
+
+
 devicesClients = []
 devices = []
 

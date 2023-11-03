@@ -3,7 +3,7 @@ import threading
 import socket
 import time
 
-serverip = "localhost"
+serverip = input("Server Ip eingeben: ")
 deviceName = "PlayerOne"
 
 NewMove = "Test"
