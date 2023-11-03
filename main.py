@@ -6,10 +6,11 @@ import time
 serverip = "localhost"
 deviceName = "PlayerOne"
 
-newMove = "Test"
+NewMove = "Test"
 
 
 def variableRefresh():
+    global NewMove
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((serverip, 5345))
     if client.recv(1024).decode("utf-8") == "NICK":
@@ -18,12 +19,20 @@ def variableRefresh():
         print("Communication error")
     while True:
         variables = client.recv(1024).decode("utf-8")
-        global newMove
-        client.send(newMove.encode("utf-8"))
-        time.sleep(1)
+        client.send(NewMove.encode("utf-8"))
+        rec = client.recv(1024).decode("utf-8")
+        print(variables)
+        print(NewMove)
+        print(rec)
+        if rec == NewMove:
+            NewMove = "None"
+            print("same")
+        else:
+            print("notsame")
 
 
-thread = threading.Thread(target=variableRefresh).start()
+thread = threading.Thread(target=variableRefresh, daemon=True)
+thread.start()
 
 
 pygame.init()
@@ -193,6 +202,8 @@ while run:
                     and MouseY <= i["positionY"] + i["sizeY"]
                 ):
                     print(f"Clicked {i['name']}")
+                    NewMove = f"Clicked {i['name']}"
+                    
 
         zoomold = zoom
         if event.type == pygame.MOUSEWHEEL:

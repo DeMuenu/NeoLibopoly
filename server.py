@@ -7,6 +7,7 @@ print(data_loaded)
 
 import threading
 import socket
+import time
 
 devicesClients = []
 devices = []
@@ -18,13 +19,15 @@ def handle(client):
     while True:
         try:
             # Broadcasting Messages
-            client.send(Variables.encode("utf-8"))
+            client.send(str(Variables).encode("utf-8"))
             message = client.recv(1024).decode("utf-8")
             client.send(message.encode("utf-8"))
+            time.sleep(0.1)
             if message != "None":
                 print(message)
 
         except:
+
             index = devicesClients.index(client)
             devicesClients.remove(client)
             client.close()
