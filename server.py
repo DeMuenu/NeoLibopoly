@@ -11,13 +11,18 @@ import socket
 devicesClients = []
 devices = []
 
+Variables = ["test", "fortnite"]
+
 
 def handle(client):
     while True:
         try:
             # Broadcasting Messages
+            client.send(Variables.encode("utf-8"))
             message = client.recv(1024).decode("utf-8")
-            print(message)
+            client.send(message.encode("utf-8"))
+            if message != "None":
+                print(message)
 
         except:
             index = devicesClients.index(client)

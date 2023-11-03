@@ -1,8 +1,32 @@
 import pygame
+import threading
+import socket
+import time
+
+serverip = "localhost"
+deviceName = "PlayerOne"
+
+newMove = "Test"
+
+
+def variableRefresh():
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect((serverip, 5345))
+    if client.recv(1024).decode("utf-8") == "NICK":
+        client.send(deviceName.encode("utf-8"))
+    else:
+        print("Communication error")
+    while True:
+        variables = client.recv(1024).decode("utf-8")
+        global newMove
+        client.send(newMove.encode("utf-8"))
+        time.sleep(1)
+
+
+thread = threading.Thread(target=variableRefresh).start()
 
 
 pygame.init()
-
 ScreenWidth = 1920
 ScreenHeight = 1080
 zoom = 1
