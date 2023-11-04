@@ -2,14 +2,16 @@ import pygame
 import threading
 import socket
 import time
+import pickle
 
 serverip = input("Server Ip eingeben: ")
 deviceName = "PlayerOne"
 
-NewMove = "Test"
-
+NewMove = "Test/one"
+GameData = {}
 
 def variableRefresh():
+    global GameData
     global NewMove
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((serverip, 5345))
@@ -18,14 +20,17 @@ def variableRefresh():
     else:
         print("Communication error")
     while True:
-        variables = client.recv(1024).decode("utf-8")
+        GameData = pickle.loads(client.recv(2048))
         client.send(NewMove.encode("utf-8"))
         rec = client.recv(1024).decode("utf-8")
-        print(variables)
-        print(NewMove)
-        print(rec)
+        #print(GameData)
+        for i in GameData["players"]:
+            print(i.position)
+        #print(variables)
+        #print(NewMove)
+        #print(rec)
         if rec == NewMove:
-            NewMove = "None"
+            NewMove = "None/None"
             print("same")
         else:
             print("notsame")
@@ -46,6 +51,7 @@ emptyDict = {}
 Layer1 = []
 Layer2 = []
 ClickableObjectsList = []
+scale = 1
 
 
 def addRenderObject(object, Layer, StartPosX, StartPosY, SizeX, SizeY, path):
@@ -84,49 +90,49 @@ def createSomething(name, asset, PosNextX, PosNextY, ScaleNextX, ScaleNextY, cli
 
 # Fields
 
-createSomething("Feld1", "assets/Board/temp_house.jpg", 100, 100, 200, 200, True)
-createSomething("Feld2", "assets/Board/temp_house.jpg", 305, 100, 200, 200, True)
-createSomething("Feld3", "assets/Board/temp_house.jpg", 510, 100, 200, 200, True)
-createSomething("Feld4", "assets/Board/temp_house.jpg", 715, 100, 200, 200, True)
-createSomething("Feld5", "assets/Board/temp_house.jpg", 920, 100, 200, 200, True)
-createSomething("Feld6", "assets/Board/temp_house.jpg", 1125, 100, 200, 200, True)
-createSomething("Feld7", "assets/Board/temp_house.jpg", 1330, 100, 200, 200, True)
-createSomething("Feld8", "assets/Board/temp_house.jpg", 1535, 100, 200, 200, True)
-createSomething("Feld9", "assets/Board/temp_house.jpg", 1740, 100, 200, 200, True)
-createSomething("Feld10", "assets/Board/temp_house.jpg", 1945, 100, 200, 200, True)
-createSomething("Feld11", "assets/Board/temp_house.jpg", 2150, 100, 200, 200, True)
+createSomething("1", "assets/board/temp_house.jpg", 100, 100, 200, 200, True)
+createSomething("2", "assets/board/temp_house.jpg", 305, 100, 200, 200, True)
+createSomething("3", "assets/board/temp_house.jpg", 510, 100, 200, 200, True)
+createSomething("4", "assets/board/temp_house.jpg", 715, 100, 200, 200, True)
+createSomething("5", "assets/board/temp_house.jpg", 920, 100, 200, 200, True)
+createSomething("6", "assets/board/temp_house.jpg", 1125, 100, 200, 200, True)
+createSomething("7", "assets/board/temp_house.jpg", 1330, 100, 200, 200, True)
+createSomething("8", "assets/board/temp_house.jpg", 1535, 100, 200, 200, True)
+createSomething("9", "assets/board/temp_house.jpg", 1740, 100, 200, 200, True)
+createSomething("10", "assets/board/temp_house.jpg", 1945, 100, 200, 200, True)
+createSomething("11", "assets/board/temp_house.jpg", 2150, 100, 200, 200, True)
 
-createSomething("Feld12", "assets/Board/temp_house.jpg", 2150, 305, 200, 200, True)
-createSomething("Feld13", "assets/Board/temp_house.jpg", 2150, 510, 200, 200, True)
-createSomething("Feld14", "assets/Board/temp_house.jpg", 2150, 715, 200, 200, True)
-createSomething("Feld15", "assets/Board/temp_house.jpg", 2150, 920, 200, 200, True)
-createSomething("Feld16", "assets/Board/temp_house.jpg", 2150, 1125, 200, 200, True)
-createSomething("Feld17", "assets/Board/temp_house.jpg", 2150, 1330, 200, 200, True)
-createSomething("Feld18", "assets/Board/temp_house.jpg", 2150, 1535, 200, 200, True)
-createSomething("Feld19", "assets/Board/temp_house.jpg", 2150, 1740, 200, 200, True)
-createSomething("Feld20", "assets/Board/temp_house.jpg", 2150, 1945, 200, 200, True)
-createSomething("Feld21", "assets/Board/temp_house.jpg", 2150, 2150, 200, 200, True)
+createSomething("12", "assets/board/temp_house.jpg", 2150, 305, 200, 200, True)
+createSomething("13", "assets/board/temp_house.jpg", 2150, 510, 200, 200, True)
+createSomething("14", "assets/board/temp_house.jpg", 2150, 715, 200, 200, True)
+createSomething("15", "assets/board/temp_house.jpg", 2150, 920, 200, 200, True)
+createSomething("16", "assets/board/temp_house.jpg", 2150, 1125, 200, 200, True)
+createSomething("17", "assets/board/temp_house.jpg", 2150, 1330, 200, 200, True)
+createSomething("18", "assets/board/temp_house.jpg", 2150, 1535, 200, 200, True)
+createSomething("19", "assets/board/temp_house.jpg", 2150, 1740, 200, 200, True)
+createSomething("20", "assets/board/temp_house.jpg", 2150, 1945, 200, 200, True)
+createSomething("21", "assets/board/temp_house.jpg", 2150, 2150, 200, 200, True)
 
-createSomething("Feld22", "assets/Board/temp_house.jpg", 1945, 2150, 200, 200, True)
-createSomething("Feld23", "assets/Board/temp_house.jpg", 1740, 2150, 200, 200, True)
-createSomething("Feld24", "assets/Board/temp_house.jpg", 1535, 2150, 200, 200, True)
-createSomething("Feld25", "assets/Board/temp_house.jpg", 1330, 2150, 200, 200, True)
-createSomething("Feld26", "assets/Board/temp_house.jpg", 1125, 2150, 200, 200, True)
-createSomething("Feld27", "assets/Board/temp_house.jpg", 920, 2150, 200, 200, True)
-createSomething("Feld28", "assets/Board/temp_house.jpg", 715, 2150, 200, 200, True)
-createSomething("Feld29", "assets/Board/temp_house.jpg", 510, 2150, 200, 200, True)
-createSomething("Feld30", "assets/Board/temp_house.jpg", 305, 2150, 200, 200, True)
-createSomething("Feld31", "assets/Board/temp_house.jpg", 100, 2150, 200, 200, True)
+createSomething("22", "assets/board/temp_house.jpg", 1945, 2150, 200, 200, True)
+createSomething("23", "assets/board/temp_house.jpg", 1740, 2150, 200, 200, True)
+createSomething("24", "assets/board/temp_house.jpg", 1535, 2150, 200, 200, True)
+createSomething("25", "assets/board/temp_house.jpg", 1330, 2150, 200, 200, True)
+createSomething("26", "assets/board/temp_house.jpg", 1125, 2150, 200, 200, True)
+createSomething("27", "assets/board/temp_house.jpg", 920, 2150, 200, 200, True)
+createSomething("28", "assets/board/temp_house.jpg", 715, 2150, 200, 200, True)
+createSomething("29", "assets/board/temp_house.jpg", 510, 2150, 200, 200, True)
+createSomething("30", "assets/board/temp_house.jpg", 305, 2150, 200, 200, True)
+createSomething("31", "assets/board/temp_house.jpg", 100, 2150, 200, 200, True)
 
-createSomething("Feld32", "assets/Board/temp_house.jpg", 100, 1945, 200, 200, True)
-createSomething("Feld33", "assets/Board/temp_house.jpg", 100, 1740, 200, 200, True)
-createSomething("Feld34", "assets/Board/temp_house.jpg", 100, 1535, 200, 200, True)
-createSomething("Feld35", "assets/Board/temp_house.jpg", 100, 1330, 200, 200, True)
-createSomething("Feld36", "assets/Board/temp_house.jpg", 100, 1125, 200, 200, True)
-createSomething("Feld37", "assets/Board/temp_house.jpg", 100, 920, 200, 200, True)
-createSomething("Feld38", "assets/Board/temp_house.jpg", 100, 715, 200, 200, True)
-createSomething("Feld39", "assets/Board/temp_house.jpg", 100, 510, 200, 200, True)
-createSomething("Feld40", "assets/Board/temp_house.jpg", 100, 305, 200, 200, True)
+createSomething("32", "assets/board/temp_house.jpg", 100, 1945, 200, 200, True)
+createSomething("33", "assets/board/temp_house.jpg", 100, 1740, 200, 200, True)
+createSomething("34", "assets/board/temp_house.jpg", 100, 1535, 200, 200, True)
+createSomething("35", "assets/board/temp_house.jpg", 100, 1330, 200, 200, True)
+createSomething("36", "assets/board/temp_house.jpg", 100, 1125, 200, 200, True)
+createSomething("37", "assets/board/temp_house.jpg", 100, 920, 200, 200, True)
+createSomething("38", "assets/board/temp_house.jpg", 100, 715, 200, 200, True)
+createSomething("39", "assets/board/temp_house.jpg", 100, 510, 200, 200, True)
+createSomething("40", "assets/board/temp_house.jpg", 100, 305, 200, 200, True)
 
 
 RenderedObjectsList = [Layer1, Layer2]
@@ -134,7 +140,7 @@ run = True
 while run:
     screen.fill((0, 0, 0))
     # pygame.draw.rect(screen, (255, 0, 0), player)
-    # screen.blit(Board, (900, 500))
+    # screen.blit(board, (900, 500))
 
     # walk
     for z in RenderedObjectsList:
@@ -150,38 +156,55 @@ while run:
                 pygame.draw.rect(screen, i["Color"], i["object"])
             # obsolete
 
+    for GD in GameData["players"]:
+        x = 500
+        y = 500
+        for i in ClickableObjectsList:
+            #print(i)
+            #print(GD)
+            if i["name"] == str(GD.position):
+                y = i["positionY"]
+                x = i["positionX"]
+                sx =  i["sizeX"] / 4
+                sy =  i["sizeY"] / 4
+        p = pygame.image.load(f"assets/players/{str(GD.color)}.png").convert_alpha()
+        p = pygame.transform.scale(p, (sx, sy))
+        screen.blit(p, (x, y))
+
+
+
     key = pygame.key.get_pressed()
     if key[pygame.K_w] == True:
         for y in RenderedObjectsList:
             for i in y:
-                i["positionY"] = i["positionY"] - 1
+                i["positionY"] = i["positionY"] - ( 10 * scale)
 
         for i in ClickableObjectsList:
-            i["positionY"] = i["positionY"] - 1
+            i["positionY"] = i["positionY"] - ( 10 * scale)
 
     elif key[pygame.K_s] == True:
         for y in RenderedObjectsList:
             for i in y:
-                i["positionY"] = i["positionY"] + 1
+                i["positionY"] = i["positionY"] + ( 10 * scale)
 
         for i in ClickableObjectsList:
-            i["positionY"] = i["positionY"] + 1
+            i["positionY"] = i["positionY"] + ( 10 * scale)
 
     if key[pygame.K_a] == True:
         for y in RenderedObjectsList:
             for i in y:
-                i["positionX"] = i["positionX"] - 1
+                i["positionX"] = i["positionX"] - ( 10 * scale)
 
         for i in ClickableObjectsList:
-            i["positionX"] = i["positionX"] - 1
+            i["positionX"] = i["positionX"] - ( 10 * scale)
 
     elif key[pygame.K_d] == True:
         for y in RenderedObjectsList:
             for i in y:
-                i["positionX"] = i["positionX"] + 1
+                i["positionX"] = i["positionX"] + ( 10 * scale)
 
         for i in ClickableObjectsList:
-            i["positionX"] = i["positionX"] + 1
+            i["positionX"] = i["positionX"] + ( 10 * scale)
 
     if key[pygame.K_ESCAPE] == True:
         run = False
@@ -202,7 +225,7 @@ while run:
                     and MouseY <= i["positionY"] + i["sizeY"]
                 ):
                     print(f"Clicked {i['name']}")
-                    NewMove = f"Clicked {i['name']}"
+                    NewMove = f"Clicked/{i['name']}"
                     
 
         zoomold = zoom
@@ -219,12 +242,21 @@ while run:
                         i["object"] = pygame.transform.scale(
                             i["object"], (i["sizeX"], i["sizeY"])
                         )
+                        
+                
 
                 for x in ClickableObjectsList:
                     x["positionX"] = x["positionX"] * 1.2
                     x["positionY"] = x["positionY"] * 1.2
                     x["sizeX"] = x["sizeX"] * 1.2
                     x["sizeY"] = x["sizeY"] * 1.2
+
+
+
+                scale = scale * 1.2
+
+
+
 
             elif event.y == -1:
                 print("Zoomed out")
@@ -234,7 +266,8 @@ while run:
                         i["sizeY"] = i["sizeY"] / 1.2
                         i["positionX"] = i["positionX"] / 1.2
                         i["positionY"] = i["positionY"] / 1.2
-                        i["object"] = pygame.image.load(i["path"]).convert_alpha()
+                        
+                        #i["object"] = pygame.image.load(i["path"]).convert_alpha()
                         i["object"] = pygame.transform.scale(
                             i["object"], (i["sizeX"], i["sizeY"])
                         )
@@ -245,6 +278,9 @@ while run:
                     x["positionY"] = x["positionY"] / 1.2
                     x["sizeX"] = x["sizeX"] / 1.2
                     x["sizeY"] = x["sizeY"] / 1.2
+
+
+                scale = scale / 1.2
 
     pygame.display.update()
 

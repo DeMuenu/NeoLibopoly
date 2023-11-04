@@ -1,35 +1,48 @@
-import json
-
-data_string = json.dumps("testlol")  # data serialized
-data_loaded = json.loads(data_string)
-print(data_loaded)
-
-
+import pickle
+import time
+from player import playerclass
 import threading
 import socket
-import time
 
 
 
-devicesClients = []
+
+
+
+#only on gamestart
+
+players = []
+
+GameData = {"players" : players}
+
+GameData["players"].append(playerclass(100000, 3, 1))
+
+GameData["players"].append(playerclass(100000, 5, 2))
+
+
+
+
+devicesClients = [] #Always execute
 devices = []
 
-Variables = ["test", "fortnite"]
-
-
-def handle(client):
+def handle(client): #Update GameData and get the next Move for each player
     while True:
         try:
             # Broadcasting Messages
-            client.send(str(Variables).encode("utf-8"))
+            client.send(pickle.dumps(GameData))
             message = client.recv(1024).decode("utf-8")
             client.send(message.encode("utf-8"))
-            time.sleep(0.1)
+            time.sleep(2)
             if message != "None":
                 print(message)
 
-        except:
+            splitMessageCommand, splitMessageData = message.split("/")
+            if splitMessageCommand == "Clicked":
+                for i in GameData["players"]:
+                    i.position = i.position + 1
 
+        except:
+            #print("Error: " + str(e))
             index = devicesClients.index(client)
             devicesClients.remove(client)
             client.close()
