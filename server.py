@@ -5,7 +5,8 @@ import threading
 import socket
 
 
-
+host = "localhost"
+port = 5345
 
 
 
@@ -32,7 +33,7 @@ def handle(client): #Update GameData and get the next Move for each player
             client.send(pickle.dumps(GameData))
             message = client.recv(1024).decode("utf-8")
             client.send(message.encode("utf-8"))
-            time.sleep(2)
+            time.sleep(0.2)
             if message != "None":
                 print(message)
 
@@ -53,8 +54,22 @@ def handle(client): #Update GameData and get the next Move for each player
             # client.send(xx.encode("utf-8"))
 
 
-host = "localhost"
-port = 5345
+
+
+
+def gameloop():
+    while True:
+        for i in GameData["players"]:
+            if i.position == 41:
+                i.position = 1
+                i.money = i.money + 4000
+
+        time.sleep(0.2)
+
+
+thread = threading.Thread(target=gameloop).start()
+
+
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((host, port))

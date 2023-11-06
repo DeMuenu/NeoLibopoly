@@ -39,6 +39,7 @@ def variableRefresh():
 thread = threading.Thread(target=variableRefresh, daemon=True)
 thread.start()
 
+time.sleep(3)
 
 pygame.init()
 ScreenWidth = 1920
