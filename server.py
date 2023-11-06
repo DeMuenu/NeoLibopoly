@@ -6,28 +6,15 @@ import socket
 import random
 
 
-<<<<<<< Updated upstream
 host = "localhost"
 port = 5345
 
 
-
-#only on gamestart
-
-players = []
-
-GameData = {"players" : players, "roll" : 0}
-=======
 # only on gamestart
 
 players = []
 
-GameData = {"players": players}
-
-GameData["players"].append(playerclass(100000, 3, 1))
-
-GameData["players"].append(playerclass(100000, 5, 2))
->>>>>>> Stashed changes
+GameData = {"players": players, "roll": 0}
 
 
 devicesClients = []  # Always execute
@@ -41,11 +28,7 @@ def handle(client):  # Update GameData and get the next Move for each player
             client.send(pickle.dumps(GameData))
             message = client.recv(1024).decode("utf-8")
             client.send(message.encode("utf-8"))
-<<<<<<< Updated upstream
             time.sleep(0.2)
-=======
-            time.sleep(0.1)
->>>>>>> Stashed changes
             if message != "None":
                 print(message)
 
@@ -70,10 +53,6 @@ def handle(client):  # Update GameData and get the next Move for each player
             # client.send(xx.encode("utf-8"))
 
 
-<<<<<<< Updated upstream
-
-
-
 def gameloop():
     while True:
         for i in GameData["players"]:
@@ -86,11 +65,6 @@ def gameloop():
 
 thread = threading.Thread(target=gameloop).start()
 
-
-=======
-host = "100.108.9.84"
-port = 5345
->>>>>>> Stashed changes
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((host, port))
@@ -109,12 +83,12 @@ while True:
     flag = 0
     for i in GameData["players"]:
         if i.nr == Playernr:
-            i.client = client
+            i.client = str(client)
             flag = 1
 
     if flag == 0:
-        GameData["players"].append(playerclass(100000, 0, client, Playernr))
-
+        GameData["players"].append(playerclass(
+            100000, 0, str(client), Playernr))
 
     thread = threading.Thread(target=handle, args=(client,)).start()
 
