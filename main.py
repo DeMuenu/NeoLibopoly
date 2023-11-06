@@ -136,6 +136,10 @@ createSomething("39", "assets/board/temp_house.jpg", 100, 510, 200, 200, True)
 createSomething("40", "assets/board/temp_house.jpg", 100, 305, 200, 200, True)
 
 
+font = pygame.font.SysFont(None, 24)
+
+
+
 RenderedObjectsList = [Layer1, Layer2]
 run = True
 while run:
@@ -143,7 +147,10 @@ while run:
     # pygame.draw.rect(screen, (255, 0, 0), player)
     # screen.blit(board, (900, 500))
 
-    # walk
+
+
+
+    #Render Fields
     for z in RenderedObjectsList:
         for i in z:
             # print(i)
@@ -157,6 +164,7 @@ while run:
                 pygame.draw.rect(screen, i["Color"], i["object"])
             # obsolete
 
+    #Render Players
     for GD in GameData["players"]:
         x = 500
         y = 500
@@ -173,6 +181,8 @@ while run:
         screen.blit(p, (x, y))
 
 
+    img = font.render(str(GameData["roll"]), True, (255, 0, 0))
+    screen.blit(img, (20, 20))
 
     key = pygame.key.get_pressed()
     if key[pygame.K_w] == True:

@@ -3,6 +3,7 @@ import time
 from player import playerclass
 import threading
 import socket
+import random
 
 
 host = "localhost"
@@ -14,7 +15,7 @@ port = 5345
 
 players = []
 
-GameData = {"players" : players}
+GameData = {"players" : players, "roll" : 0}
 
 GameData["players"].append(playerclass(100000, 3, 1))
 
@@ -40,7 +41,10 @@ def handle(client): #Update GameData and get the next Move for each player
             splitMessageCommand, splitMessageData = message.split("/")
             if splitMessageCommand == "Clicked":
                 for i in GameData["players"]:
-                    i.position = i.position + 1
+                    i.position = i.position + 3
+                    random.seed(a=(str(client) * str(time.localtime())), version=2)
+                    GameData["roll"] = random.randrange(1, 12, 1)
+                    print(f"roll = {GameData['roll']}")
 
         except:
             #print("Error: " + str(e))
@@ -60,8 +64,8 @@ def handle(client): #Update GameData and get the next Move for each player
 def gameloop():
     while True:
         for i in GameData["players"]:
-            if i.position == 41:
-                i.position = 1
+            if i.position > 40:
+                i.position = i.position - 40
                 i.money = i.money + 4000
 
         time.sleep(0.2)
