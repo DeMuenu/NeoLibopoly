@@ -5,6 +5,7 @@ import time
 import pickle
 
 serverip = input("Server Ip eingeben: ")
+nr = input("Spielernummer eingeben: ")
 deviceName = "PlayerOne"
 
 NewMove = "Test/one"
@@ -17,10 +18,11 @@ def variableRefresh():
     client.connect((serverip, 5345))
     if client.recv(1024).decode("utf-8") == "NICK":
         client.send(deviceName.encode("utf-8"))
+        client.send(nr.encode("utf-8"))
     else:
         print("Communication error")
     while True:
-        GameData = pickle.loads(client.recv(2048))
+        GameData = pickle.loads(client.recv(4056))
         client.send(NewMove.encode("utf-8"))
         rec = client.recv(1024).decode("utf-8")
         #print(GameData)
@@ -176,7 +178,7 @@ while run:
                 x = i["positionX"]
                 sx =  i["sizeX"] / 4
                 sy =  i["sizeY"] / 4
-        p = pygame.image.load(f"assets/players/{str(GD.color)}.png").convert_alpha()
+        p = pygame.image.load(f"assets/players/{str(GD.nr)}.png").convert_alpha()
         p = pygame.transform.scale(p, (sx, sy))
         screen.blit(p, (x, y))
 

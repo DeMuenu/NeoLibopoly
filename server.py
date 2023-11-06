@@ -17,10 +17,6 @@ players = []
 
 GameData = {"players" : players, "roll" : 0}
 
-GameData["players"].append(playerclass(100000, 3, 1))
-
-GameData["players"].append(playerclass(100000, 5, 2))
-
 
 
 
@@ -41,10 +37,11 @@ def handle(client): #Update GameData and get the next Move for each player
             splitMessageCommand, splitMessageData = message.split("/")
             if splitMessageCommand == "Clicked":
                 for i in GameData["players"]:
-                    i.position = i.position + 3
-                    random.seed(a=(str(client) * str(time.localtime())), version=2)
-                    GameData["roll"] = random.randrange(1, 12, 1)
-                    print(f"roll = {GameData['roll']}")
+                    if i.client == client:
+                        i.position = i.position + 3
+                        random.seed(a=(str(time.localtime())), version=2)
+                        GameData["roll"] = random.randrange(1, 12, 1)
+                        print(f"roll = {GameData['roll']}")
 
         except:
             #print("Error: " + str(e))
@@ -86,8 +83,19 @@ while True:
 
     client.send("NICK".encode("utf-8"))
     nickname = client.recv(1024).decode("utf-8")
+    Playernr = client.recv(1024).decode("utf-8")
     devices.append(nickname)
     devicesClients.append(client)
+    flag = 0
+    for i in GameData["players"]:
+        if i.nr == Playernr:
+            i.client = client
+            flag = 1
+
+    if flag == 0:
+        GameData["players"].append(playerclass(100000, 0, client, Playernr))
+
+
     thread = threading.Thread(target=handle, args=(client,)).start()
 
     print(f"{devices} {devicesClients}")
