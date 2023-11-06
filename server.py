@@ -6,6 +6,7 @@ import socket
 import random
 
 
+<<<<<<< Updated upstream
 host = "localhost"
 port = 5345
 
@@ -16,21 +17,35 @@ port = 5345
 players = []
 
 GameData = {"players" : players, "roll" : 0}
+=======
+# only on gamestart
+
+players = []
+
+GameData = {"players": players}
+
+GameData["players"].append(playerclass(100000, 3, 1))
+
+GameData["players"].append(playerclass(100000, 5, 2))
+>>>>>>> Stashed changes
 
 
-
-
-devicesClients = [] #Always execute
+devicesClients = []  # Always execute
 devices = []
 
-def handle(client): #Update GameData and get the next Move for each player
+
+def handle(client):  # Update GameData and get the next Move for each player
     while True:
         try:
             # Broadcasting Messages
             client.send(pickle.dumps(GameData))
             message = client.recv(1024).decode("utf-8")
             client.send(message.encode("utf-8"))
+<<<<<<< Updated upstream
             time.sleep(0.2)
+=======
+            time.sleep(0.1)
+>>>>>>> Stashed changes
             if message != "None":
                 print(message)
 
@@ -43,8 +58,8 @@ def handle(client): #Update GameData and get the next Move for each player
                         GameData["roll"] = random.randrange(1, 12, 1)
                         print(f"roll = {GameData['roll']}")
 
-        except:
-            #print("Error: " + str(e))
+        except KeyError as e:
+            print("Error: " + str(e))
             index = devicesClients.index(client)
             devicesClients.remove(client)
             client.close()
@@ -55,6 +70,7 @@ def handle(client): #Update GameData and get the next Move for each player
             # client.send(xx.encode("utf-8"))
 
 
+<<<<<<< Updated upstream
 
 
 
@@ -71,6 +87,10 @@ def gameloop():
 thread = threading.Thread(target=gameloop).start()
 
 
+=======
+host = "100.108.9.84"
+port = 5345
+>>>>>>> Stashed changes
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((host, port))
