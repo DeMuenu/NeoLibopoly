@@ -160,6 +160,7 @@ font = pygame.font.SysFont(None, 24)
 RenderedObjectsList = [Layer1, Layer2]
 run = True
 while run:
+    start = time.time()
     screen.fill((0, 0, 0))
     # pygame.draw.rect(screen, (255, 0, 0), player)
     # screen.blit(board, (900, 500))
@@ -195,8 +196,9 @@ while run:
         p = pygame.transform.scale(p, (sx, sy))
         screen.blit(p, (x, y))
 
-    img = font.render(str(GameData["roll"]), True, (255, 0, 0))
-    screen.blit(img, (20, 20))
+    # Render number
+    img = font.render(str(GameData["rollAnimation"]), True, (255, 0, 0))
+    screen.blit(img, (1880, 20))
 
     # Roll Button
     # print(f"{nr} {GameData['whosTurn']}")
@@ -211,7 +213,7 @@ while run:
         if flag == False:
             addClickableObject("roll", rollbutton, 1700, 900, 200, 100)
     else:
-        #print("shouldnt RollClickObject exists")
+        # print("shouldnt RollClickObject exists")
         rollbutton = pygame.draw.rect(
             screen, (94, 94, 94), pygame.Rect(1700, 900, 200, 100))
         for i in ClickableObjectsList:
@@ -328,7 +330,11 @@ while run:
                         x["sizeY"] = x["sizeY"] / 1.2
 
                 scale = scale / 1.2
-
+    end = time.time()
+    fps = (end-start)
+    fps = 1/fps
+    img = font.render(str(round(fps)), True, (255, 255, 25))
+    screen.blit(img, (20, 20))
     pygame.display.update()
 
 

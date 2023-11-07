@@ -14,7 +14,7 @@ port = 5345
 
 players = []
 
-GameData = {"players": players, "roll": 0, "whosTurn": 1}
+GameData = {"players": players, "roll": 0, "rollAnimation": 0, "whosTurn": 1}
 
 
 devicesClients = []  # Always execute
@@ -36,17 +36,19 @@ def handle(client):  # Update GameData and get the next Move for each player
                     if message != "None":
                         print(message)
                     if str(i.client) == str(client):
-                        if splitMessageData == "roll":
-                            random.seed(
-                                a=(str(time.localtime())), version=2)
-                            GameData["roll"] = random.randrange(1, 12, 1)
+                        print(f"{i.nr} {GameData['whosTurn']}")
+                        if int(i.nr) == int(GameData["whosTurn"]):
+                            if splitMessageData == "roll":
+                                random.seed(
+                                    a=(str(time.localtime())), version=2)
+                                GameData["roll"] = random.randrange(2, 12, 1)
 
-                            i.position = i.position + GameData["roll"]
+                                i.position = i.position + GameData["roll"]
 
-                            if GameData["whosTurn"] == 1:
-                                GameData["whosTurn"] = 2
-                            else:
-                                GameData["whosTurn"] = 1
+                                if GameData["whosTurn"] == 1:
+                                    GameData["whosTurn"] = 2
+                                else:
+                                    GameData["whosTurn"] = 1
 
         except:
             # print("Error: " + str(e))
@@ -61,15 +63,28 @@ def handle(client):  # Update GameData and get the next Move for each player
 
 
 def gameloop():
+    counter = 0
     while True:
         for i in GameData["players"]:
             if i.position > 40:
                 i.position = i.position - 40
                 i.money = i.money + 4000
+        print(GameData["roll"] + GameData["rollAnimation"])
+        if GameData["roll"] != GameData["rollAnimation"]:
+            print(f"roll animation {counter}")
+            if counter == 5:
+                GameData["rollAnimation"] = GameData["roll"]
+                counter = 0
+            else:
+                while (GameData["rollAnimation"] == GameData["roll"]):
+                    GameData["rollAnimation"] = random.randrange(2, 12, 1)
+                    print(GameData["rollAnimation"])
+                counter = counter + 1
+            print("end rollanimation")
 
         time.sleep(0.2)
 
-
+  
 thread = threading.Thread(target=gameloop).start()
 
 
