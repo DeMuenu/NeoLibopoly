@@ -13,8 +13,10 @@ port = 5345
 # only on gamestart
 
 players = []
+active_players = []
 
-GameData = {"players": players, "roll": 0, "whosTurn": 1}
+GameData = {"players": players, "roll": 0,
+            "whosTurn": 1, "aktivePlayers": active_players, "HasRolled": False}
 
 
 devicesClients = []  # Always execute
@@ -44,11 +46,14 @@ def handle(client):  # Update GameData and get the next Move for each player
                                 GameData["roll"] = random.randrange(2, 12, 1)
 
                                 i.position = i.position + GameData["roll"]
+                                GameData["HasRolled"] = True
 
                                 if GameData["whosTurn"] == 1:
                                     GameData["whosTurn"] = 2
                                 else:
                                     GameData["whosTurn"] = 1
+
+                    
 
         except:
             # print("Error: " + str(e))
@@ -57,6 +62,7 @@ def handle(client):  # Update GameData and get the next Move for each player
             client.close()
             nickname = devices[index]
             devices.remove(nickname)
+            GameData["aktivePlayers"].remove(nickname)
             print(f"removed {nickname}")
             break
             # client.send(xx.encode("utf-8"))
@@ -69,7 +75,7 @@ def gameloop():
             if i.position > 40:
                 i.position = i.position - 40
                 i.money = i.money + 4000
-
+        print(GameData["aktivePlayers"])
         time.sleep(0.2)
 
 
@@ -89,6 +95,7 @@ while True:
     nickname = client.recv(1024).decode("utf-8")
     Playernr = client.recv(1024).decode("utf-8")
     devices.append(nickname)
+    GameData["aktivePlayers"].append(nickname)
     devicesClients.append(client)
     flag = 0
     for i in GameData["players"]:
