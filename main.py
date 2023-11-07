@@ -6,10 +6,11 @@ import pickle
 
 serverip = input("Server Ip eingeben: ")
 nr = input("Spielernummer eingeben: ")
-deviceName = "PlayerOne"
+deviceName = "PlayerOne"  # obsolete
 
 NewMove = "Test/one"
 GameData = {}
+
 
 def variableRefresh():
     global GameData
@@ -17,7 +18,7 @@ def variableRefresh():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((serverip, 5345))
     if client.recv(1024).decode("utf-8") == "NICK":
-        client.send(deviceName.encode("utf-8"))
+        client.send(nr.encode("utf-8"))
         client.send(nr.encode("utf-8"))
     else:
         print("Communication error")
@@ -25,12 +26,14 @@ def variableRefresh():
         GameData = pickle.loads(client.recv(4056))
         client.send(NewMove.encode("utf-8"))
         rec = client.recv(1024).decode("utf-8")
-        #print(GameData)
+        print(GameData)
+        # print(GameData)
         for i in GameData["players"]:
-            print(i.position)
-        #print(variables)
-        #print(NewMove)
-        #print(rec)
+            print(i)
+
+        # print(variables)
+        # print(NewMove)
+        # print(rec)
         if rec == NewMove:
             NewMove = "None/None"
             print("same")
@@ -86,9 +89,11 @@ def addClickableObject(name, object, PositionX, PositionY, SizeX, SizeY):
 def createSomething(name, asset, PosNextX, PosNextY, ScaleNextX, ScaleNextY, clickable):
     tempOB = pygame.image.load(asset).convert_alpha()
     tempOB = pygame.transform.smoothscale(tempOB, (ScaleNextX, ScaleNextY))
-    addRenderObject(tempOB, 1, PosNextX, PosNextY, ScaleNextX, ScaleNextY, asset)
+    addRenderObject(tempOB, 1, PosNextX, PosNextY,
+                    ScaleNextX, ScaleNextY, asset)
     if clickable == True:
-        addClickableObject(name, tempOB, PosNextX, PosNextY, ScaleNextX, ScaleNextY)
+        addClickableObject(name, tempOB, PosNextX,
+                           PosNextY, ScaleNextX, ScaleNextY)
 
 
 # Fields
@@ -109,18 +114,29 @@ createSomething("12", "assets/board/temp_house.jpg", 2150, 305, 200, 200, True)
 createSomething("13", "assets/board/temp_house.jpg", 2150, 510, 200, 200, True)
 createSomething("14", "assets/board/temp_house.jpg", 2150, 715, 200, 200, True)
 createSomething("15", "assets/board/temp_house.jpg", 2150, 920, 200, 200, True)
-createSomething("16", "assets/board/temp_house.jpg", 2150, 1125, 200, 200, True)
-createSomething("17", "assets/board/temp_house.jpg", 2150, 1330, 200, 200, True)
-createSomething("18", "assets/board/temp_house.jpg", 2150, 1535, 200, 200, True)
-createSomething("19", "assets/board/temp_house.jpg", 2150, 1740, 200, 200, True)
-createSomething("20", "assets/board/temp_house.jpg", 2150, 1945, 200, 200, True)
-createSomething("21", "assets/board/temp_house.jpg", 2150, 2150, 200, 200, True)
+createSomething("16", "assets/board/temp_house.jpg",
+                2150, 1125, 200, 200, True)
+createSomething("17", "assets/board/temp_house.jpg",
+                2150, 1330, 200, 200, True)
+createSomething("18", "assets/board/temp_house.jpg",
+                2150, 1535, 200, 200, True)
+createSomething("19", "assets/board/temp_house.jpg",
+                2150, 1740, 200, 200, True)
+createSomething("20", "assets/board/temp_house.jpg",
+                2150, 1945, 200, 200, True)
+createSomething("21", "assets/board/temp_house.jpg",
+                2150, 2150, 200, 200, True)
 
-createSomething("22", "assets/board/temp_house.jpg", 1945, 2150, 200, 200, True)
-createSomething("23", "assets/board/temp_house.jpg", 1740, 2150, 200, 200, True)
-createSomething("24", "assets/board/temp_house.jpg", 1535, 2150, 200, 200, True)
-createSomething("25", "assets/board/temp_house.jpg", 1330, 2150, 200, 200, True)
-createSomething("26", "assets/board/temp_house.jpg", 1125, 2150, 200, 200, True)
+createSomething("22", "assets/board/temp_house.jpg",
+                1945, 2150, 200, 200, True)
+createSomething("23", "assets/board/temp_house.jpg",
+                1740, 2150, 200, 200, True)
+createSomething("24", "assets/board/temp_house.jpg",
+                1535, 2150, 200, 200, True)
+createSomething("25", "assets/board/temp_house.jpg",
+                1330, 2150, 200, 200, True)
+createSomething("26", "assets/board/temp_house.jpg",
+                1125, 2150, 200, 200, True)
 createSomething("27", "assets/board/temp_house.jpg", 920, 2150, 200, 200, True)
 createSomething("28", "assets/board/temp_house.jpg", 715, 2150, 200, 200, True)
 createSomething("29", "assets/board/temp_house.jpg", 510, 2150, 200, 200, True)
@@ -141,7 +157,6 @@ createSomething("40", "assets/board/temp_house.jpg", 100, 305, 200, 200, True)
 font = pygame.font.SysFont(None, 24)
 
 
-
 RenderedObjectsList = [Layer1, Layer2]
 run = True
 while run:
@@ -149,10 +164,7 @@ while run:
     # pygame.draw.rect(screen, (255, 0, 0), player)
     # screen.blit(board, (900, 500))
 
-
-
-
-    #Render Fields
+    # Render Fields
     for z in RenderedObjectsList:
         for i in z:
             # print(i)
@@ -166,58 +178,86 @@ while run:
                 pygame.draw.rect(screen, i["Color"], i["object"])
             # obsolete
 
-    #Render Players
+    # Render Players
     for GD in GameData["players"]:
         x = 500
         y = 500
         for i in ClickableObjectsList:
-            #print(i)
-            #print(GD)
+            # print(i)
+            # print(GD)
             if i["name"] == str(GD.position):
                 y = i["positionY"]
                 x = i["positionX"]
-                sx =  i["sizeX"] / 4
-                sy =  i["sizeY"] / 4
-        p = pygame.image.load(f"assets/players/{str(GD.nr)}.png").convert_alpha()
+                sx = i["sizeX"] / 4
+                sy = i["sizeY"] / 4
+        p = pygame.image.load(
+            f"assets/players/{str(GD.nr)}.png").convert_alpha()
         p = pygame.transform.scale(p, (sx, sy))
         screen.blit(p, (x, y))
-
 
     img = font.render(str(GameData["roll"]), True, (255, 0, 0))
     screen.blit(img, (20, 20))
 
+    # Roll Button
+    # print(f"{nr} {GameData['whosTurn']}")
+    if int(nr) == int(GameData["whosTurn"]):
+        # print("roll")
+        rollbutton = pygame.draw.rect(
+            screen, (255, 0, 0), pygame.Rect(1700, 900, 200, 100))
+        flag = False
+        for i in ClickableObjectsList:
+            if i["name"] == "roll":
+                flag = True
+        if flag == False:
+            addClickableObject("roll", rollbutton, 1700, 900, 200, 100)
+    else:
+        #print("shouldnt RollClickObject exists")
+        rollbutton = pygame.draw.rect(
+            screen, (94, 94, 94), pygame.Rect(1700, 900, 200, 100))
+        for i in ClickableObjectsList:
+            if i["name"] == "roll":
+                index = ClickableObjectsList.index(i)
+                ClickableObjectsList.pop(index)
+
+    # print(ClickableObjectsList)
+
+    # Keypress events
     key = pygame.key.get_pressed()
     if key[pygame.K_w] == True:
         for y in RenderedObjectsList:
             for i in y:
-                i["positionY"] = i["positionY"] - ( 10 * scale)
+                i["positionY"] = i["positionY"] - (10 * scale)
 
         for i in ClickableObjectsList:
-            i["positionY"] = i["positionY"] - ( 10 * scale)
+            if i["name"] != "roll":
+                i["positionY"] = i["positionY"] - (10 * scale)
 
     elif key[pygame.K_s] == True:
         for y in RenderedObjectsList:
             for i in y:
-                i["positionY"] = i["positionY"] + ( 10 * scale)
+                i["positionY"] = i["positionY"] + (10 * scale)
 
         for i in ClickableObjectsList:
-            i["positionY"] = i["positionY"] + ( 10 * scale)
+            if i["name"] != "roll":
+                i["positionY"] = i["positionY"] + (10 * scale)
 
     if key[pygame.K_a] == True:
         for y in RenderedObjectsList:
             for i in y:
-                i["positionX"] = i["positionX"] - ( 10 * scale)
+                i["positionX"] = i["positionX"] - (10 * scale)
 
         for i in ClickableObjectsList:
-            i["positionX"] = i["positionX"] - ( 10 * scale)
+            if i["name"] != "roll":
+                i["positionX"] = i["positionX"] - (10 * scale)
 
     elif key[pygame.K_d] == True:
         for y in RenderedObjectsList:
             for i in y:
-                i["positionX"] = i["positionX"] + ( 10 * scale)
+                i["positionX"] = i["positionX"] + (10 * scale)
 
         for i in ClickableObjectsList:
-            i["positionX"] = i["positionX"] + ( 10 * scale)
+            if i["name"] != "roll":
+                i["positionX"] = i["positionX"] + (10 * scale)
 
     if key[pygame.K_ESCAPE] == True:
         run = False
@@ -238,8 +278,7 @@ while run:
                     and MouseY <= i["positionY"] + i["sizeY"]
                 ):
                     print(f"Clicked {i['name']}")
-                    NewMove = f"Clicked/{i['name']}"
-                    
+                    NewMove = f"clicked/{i['name']}"
 
         zoomold = zoom
         if event.type == pygame.MOUSEWHEEL:
@@ -251,25 +290,20 @@ while run:
                         i["sizeY"] = i["sizeY"] * 1.2
                         i["positionX"] = i["positionX"] * 1.2
                         i["positionY"] = i["positionY"] * 1.2
-                        i["object"] = pygame.image.load(i["path"]).convert_alpha()
+                        i["object"] = pygame.image.load(
+                            i["path"]).convert_alpha()
                         i["object"] = pygame.transform.scale(
                             i["object"], (i["sizeX"], i["sizeY"])
                         )
-                        
-                
 
                 for x in ClickableObjectsList:
-                    x["positionX"] = x["positionX"] * 1.2
-                    x["positionY"] = x["positionY"] * 1.2
-                    x["sizeX"] = x["sizeX"] * 1.2
-                    x["sizeY"] = x["sizeY"] * 1.2
-
-
+                    if x["name"] != "roll":
+                        x["positionX"] = x["positionX"] * 1.2
+                        x["positionY"] = x["positionY"] * 1.2
+                        x["sizeX"] = x["sizeX"] * 1.2
+                        x["sizeY"] = x["sizeY"] * 1.2
 
                 scale = scale * 1.2
-
-
-
 
             elif event.y == -1:
                 print("Zoomed out")
@@ -279,19 +313,19 @@ while run:
                         i["sizeY"] = i["sizeY"] / 1.2
                         i["positionX"] = i["positionX"] / 1.2
                         i["positionY"] = i["positionY"] / 1.2
-                        
-                        #i["object"] = pygame.image.load(i["path"]).convert_alpha()
+
+                        # i["object"] = pygame.image.load(i["path"]).convert_alpha()
                         i["object"] = pygame.transform.scale(
                             i["object"], (i["sizeX"], i["sizeY"])
                         )
                         print(i["sizeX"])
 
                 for x in ClickableObjectsList:
-                    x["positionX"] = x["positionX"] / 1.2
-                    x["positionY"] = x["positionY"] / 1.2
-                    x["sizeX"] = x["sizeX"] / 1.2
-                    x["sizeY"] = x["sizeY"] / 1.2
-
+                    if x["name"] != "roll":
+                        x["positionX"] = x["positionX"] / 1.2
+                        x["positionY"] = x["positionY"] / 1.2
+                        x["sizeX"] = x["sizeX"] / 1.2
+                        x["sizeY"] = x["sizeY"] / 1.2
 
                 scale = scale / 1.2
 

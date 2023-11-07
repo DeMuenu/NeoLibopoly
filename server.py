@@ -14,7 +14,7 @@ port = 5345
 
 players = []
 
-GameData = {"players": players, "roll": 0}
+GameData = {"players": players, "roll": 0, "whosTurn": 1}
 
 
 devicesClients = []  # Always execute
@@ -29,20 +29,27 @@ def handle(client):  # Update GameData and get the next Move for each player
             message = client.recv(1024).decode("utf-8")
             client.send(message.encode("utf-8"))
             time.sleep(0.2)
-            if message != "None":
-                print(message)
 
             splitMessageCommand, splitMessageData = message.split("/")
-            if splitMessageCommand == "Clicked":
+            if splitMessageCommand == "clicked":
                 for i in GameData["players"]:
-                    if i.client == client:
-                        i.position = i.position + 3
-                        random.seed(a=(str(time.localtime())), version=2)
-                        GameData["roll"] = random.randrange(1, 12, 1)
-                        print(f"roll = {GameData['roll']}")
+                    if message != "None":
+                        print(message)
+                    if str(i.client) == str(client):
+                        if splitMessageData == "roll":
+                            random.seed(
+                                a=(str(time.localtime())), version=2)
+                            GameData["roll"] = random.randrange(1, 12, 1)
 
-        except KeyError as e:
-            print("Error: " + str(e))
+                            i.position = i.position + GameData["roll"]
+
+                            if GameData["whosTurn"] == 1:
+                                GameData["whosTurn"] = 2
+                            else:
+                                GameData["whosTurn"] = 1
+
+        except:
+            # print("Error: " + str(e))
             index = devicesClients.index(client)
             devicesClients.remove(client)
             client.close()
@@ -88,7 +95,7 @@ while True:
 
     if flag == 0:
         GameData["players"].append(playerclass(
-            100000, 0, str(client), Playernr))
+            100000, 1, str(client), Playernr))
 
     thread = threading.Thread(target=handle, args=(client,)).start()
 
