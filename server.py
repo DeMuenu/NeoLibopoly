@@ -14,7 +14,7 @@ port = 5345
 
 players = []
 
-GameData = {"players": players, "roll": 0, "rollAnimation": 0, "whosTurn": 1}
+GameData = {"players": players, "roll": 0, "whosTurn": 1}
 
 
 devicesClients = []  # Always execute
@@ -69,22 +69,10 @@ def gameloop():
             if i.position > 40:
                 i.position = i.position - 40
                 i.money = i.money + 4000
-        print(GameData["roll"] + GameData["rollAnimation"])
-        if GameData["roll"] != GameData["rollAnimation"]:
-            print(f"roll animation {counter}")
-            if counter == 5:
-                GameData["rollAnimation"] = GameData["roll"]
-                counter = 0
-            else:
-                while (GameData["rollAnimation"] == GameData["roll"]):
-                    GameData["rollAnimation"] = random.randrange(2, 12, 1)
-                    print(GameData["rollAnimation"])
-                counter = counter + 1
-            print("end rollanimation")
 
         time.sleep(0.2)
 
-  
+
 thread = threading.Thread(target=gameloop).start()
 
 

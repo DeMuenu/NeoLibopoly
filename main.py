@@ -196,10 +196,6 @@ while run:
         p = pygame.transform.scale(p, (sx, sy))
         screen.blit(p, (x, y))
 
-    # Render number
-    img = font.render(str(GameData["rollAnimation"]), True, (255, 0, 0))
-    screen.blit(img, (1880, 20))
-
     # Roll Button
     # print(f"{nr} {GameData['whosTurn']}")
     if int(nr) == int(GameData["whosTurn"]):
@@ -221,7 +217,10 @@ while run:
                 index = ClickableObjectsList.index(i)
                 ClickableObjectsList.pop(index)
 
-    # print(ClickableObjectsList)
+    # Render number
+    img = font.render(str(GameData["roll"]), True, (255, 238, 0))
+    img = pygame.transform.smoothscale(img, (70, 70))
+    screen.blit(img, (1765, 915))
 
     # Keypress events
     key = pygame.key.get_pressed()
