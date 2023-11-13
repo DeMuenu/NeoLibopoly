@@ -31,3 +31,6 @@ class templateField:
         if self.owner != 0:
             if self.owner != landedPlayer.nr:
                 landedPlayer.money = landedPlayer.money - self.rent
+
+
+print("Test")
