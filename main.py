@@ -22,18 +22,15 @@ def variableRefresh():
         client.send(nr.encode("utf-8"))
     else:
         print("Communication error")
+ 
     while True:
-        GameData = pickle.loads(client.recv(4056))
-        client.send(NewMove.encode("utf-8"))
+        GameData = pickle.loads(client.recv(4000))
+        X, Y = pygame.mouse.get_pos()
+        sendlist = [NewMove, X, Y]
+        client.send(pickle.dumps(sendlist))
+    
         rec = client.recv(1024).decode("utf-8")
         print(GameData)
-        # print(GameData)
-        for i in GameData["players"]:
-            print(i)
-
-        # print(variables)
-        # print(NewMove)
-        # print(rec)
         if rec == NewMove:
             NewMove = "None/None"
             print("same")
@@ -44,7 +41,7 @@ def variableRefresh():
 thread = threading.Thread(target=variableRefresh, daemon=True)
 thread.start()
 
-time.sleep(3)
+
 
 pygame.init()
 ScreenWidth = 1920
@@ -52,6 +49,7 @@ ScreenHeight = 1080
 zoom = 1
 screen = pygame.display.set_mode((ScreenWidth, ScreenHeight))
 
+time.sleep(3)
 
 emptyDict = {}
 Layer1 = []
@@ -199,23 +197,24 @@ while run:
     # Roll Button
     # print(f"{nr} {GameData['whosTurn']}")
     if int(nr) == int(GameData["whosTurn"]):
-        # print("roll")
-        rollbutton = pygame.draw.rect(
-            screen, (255, 0, 0), pygame.Rect(1700, 900, 200, 100))
-        flag = False
-        for i in ClickableObjectsList:
-            if i["name"] == "roll":
-                flag = True
-        if flag == False:
-            addClickableObject("roll", rollbutton, 1700, 900, 200, 100)
-    else:
-        # print("shouldnt RollClickObject exists")
-        rollbutton = pygame.draw.rect(
-            screen, (94, 94, 94), pygame.Rect(1700, 900, 200, 100))
-        for i in ClickableObjectsList:
-            if i["name"] == "roll":
-                index = ClickableObjectsList.index(i)
-                ClickableObjectsList.pop(index)
+        if GameData["hasRolled"] == False:
+            # print("roll")
+            rollbutton = pygame.draw.rect(
+                screen, (255, 0, 0), pygame.Rect(1700, 900, 200, 100))
+            flag = False
+            for i in ClickableObjectsList:
+                if i["name"] == "roll":
+                    flag = True
+            if flag == False:
+                addClickableObject("roll", rollbutton, 1700, 900, 200, 100)
+        else:
+            # print("shouldnt RollClickObject exists")
+            rollbutton = pygame.draw.rect(
+                screen, (94, 94, 94), pygame.Rect(1700, 900, 200, 100))
+            for i in ClickableObjectsList:
+                if i["name"] == "roll":
+                    index = ClickableObjectsList.index(i)
+                    ClickableObjectsList.pop(index)
 
     # Render number
     img = font.render(str(GameData["roll"]), True, (255, 238, 0))

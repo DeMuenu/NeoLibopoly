@@ -4,3 +4,4 @@ class playerclass:
         self.position = position
         self.client = client
         self.nr = clientnumber
+        self.owns = []

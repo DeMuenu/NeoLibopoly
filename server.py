@@ -16,7 +16,7 @@ players = []
 active_players = []
 
 GameData = {"players": players, "roll": 0,
-            "whosTurn": 1, "aktivePlayers": active_players, "HasRolled": False}
+            "whosTurn": 1, "aktivePlayers": active_players, "hasRolled": False, "activeMouseX": 0, "activeMouseY": 0}
 
 
 devicesClients = []  # Always execute
@@ -28,7 +28,10 @@ def handle(client):  # Update GameData and get the next Move for each player
         try:
             # Broadcasting Messages
             client.send(pickle.dumps(GameData))
-            message = client.recv(1024).decode("utf-8")
+            list = pickle.loads(client.recv(1024))
+            message, MouseX, MouseY = list
+            print(MouseX)
+            print(MouseY)
             client.send(message.encode("utf-8"))
             time.sleep(0.2)
 
@@ -56,7 +59,7 @@ def handle(client):  # Update GameData and get the next Move for each player
                     
 
         except:
-            # print("Error: " + str(e))
+            # 
             index = devicesClients.index(client)
             devicesClients.remove(client)
             client.close()
@@ -64,8 +67,10 @@ def handle(client):  # Update GameData and get the next Move for each player
             devices.remove(nickname)
             GameData["aktivePlayers"].remove(nickname)
             print(f"removed {nickname}")
-            break
+            
             # client.send(xx.encode("utf-8"))
+            #print("Error: " + str(e))
+            break
 
 
 def gameloop():
