@@ -16,7 +16,7 @@ players = []
 active_players = []
 
 activeMenus = [{"OptionText": "Buy Field", "OptionFunction": "buyField"}]
-activeMenuSpecs = {"MenuAtachedTo": "1", "activeMenus": activeMenus}
+activeMenuSpecs = {"MenuAtachedTo": "4", "activeMenus": activeMenus}
 
 GameData = {"players": players, "roll": 0,
             "whosTurn": 1, "aktivePlayers": active_players, "hasRolled": False, "activeMouseX": 0, "activeMouseY": 0, "activeMenuSpecs" : activeMenuSpecs}
@@ -60,12 +60,15 @@ def handle(client):  # Update GameData and get the next Move for each player
                                 i.position = i.position + GameData["roll"]
                                 GameData["hasRolled"] = True
 
-                            if splitMessageData == "skip":
+                            elif splitMessageData == "skip":
                                 if GameData["whosTurn"] == 1:
                                     GameData["whosTurn"] = 2
                                 else:
                                     GameData["whosTurn"] = 1
                                 GameData["hasRolled"] = False
+
+                            else:
+                                GameData["activeMenuSpecs"]["MenuAtachedTo"] = splitMessageData
             
 
                     

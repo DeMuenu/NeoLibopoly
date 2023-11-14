@@ -261,12 +261,12 @@ while run:
         x = 500
         y = 500
         for i in ClickableObjectsList:
-            if i["name"] == str(GD.position):
+            if i["name"] == str(GameData["activeMenuSpecs"]["MenuAtachedTo"]):
                 sx = i["sizeX"]
                 sy = i["sizeY"]                
                 y = i["positionY"] + sy
                 x = i["positionX"]
-        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(x + OffsetX, y + OffsetY, 200, 70 * len(GameData["activeMenuSpecs"]["MenuAtachedTo"])))
+        pygame.draw.rect(screen, (50, 50, 50), pygame.Rect(x + OffsetX, y + OffsetY, 200, 70 * len(GameData["activeMenuSpecs"]["MenuAtachedTo"])))
         for i in GameData["activeMenuSpecs"]["activeMenus"]:
             pygame.draw.rect(screen, (200, 0, 0), pygame.Rect(x + 5 + OffsetX, y + 10 + OffsetY, 190, 50))
             img = font.render(i["OptionText"], True, (255, 238, 0))
