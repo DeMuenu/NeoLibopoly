@@ -30,16 +30,22 @@ def handle(client):  # Update GameData and get the next Move for each player
             client.send(pickle.dumps(GameData))
             list = pickle.loads(client.recv(1024))
             message, MouseX, MouseY = list
-            print(MouseX)
-            print(MouseY)
+                        
             client.send(message.encode("utf-8"))
             time.sleep(0.2)
+            index = devicesClients.index(client)
+            nickname = devices[index]
+
+            if GameData["whosTurn"] == int(nickname):
+                print(MouseX)
+                print(MouseY)
+                GameData["activeMouseX"] = MouseX
+                GameData["activeMouseY"] = MouseY
 
             splitMessageCommand, splitMessageData = message.split("/")
             if splitMessageCommand == "clicked":
                 for i in GameData["players"]:
-                    if message != "None":
-                        print(message)
+
                     if str(i.client) == str(client):
                         print(f"{i.nr} {GameData['whosTurn']}")
                         if int(i.nr) == int(GameData["whosTurn"]):

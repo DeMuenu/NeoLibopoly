@@ -8,8 +8,120 @@ serverip = input("Server Ip eingeben: ")
 nr = input("Spielernummer eingeben: ")
 deviceName = "PlayerOne"  # obsolete
 
+posXold = 0
+posYold = 0
+ClickableObjectsList = [{"positionX": 0, "positionY": 0}]
 NewMove = "Test/one"
 GameData = {}
+scale = 1
+
+OffsetX = 0
+OffsetY = 0
+
+emptyDict = {}
+Layer1 = []
+Layer2 = []
+
+pygame.init()
+ScreenWidth = 1920
+ScreenHeight = 1080
+zoom = 1
+screen = pygame.display.set_mode((ScreenWidth, ScreenHeight))
+
+def addRenderObject(object, Layer, StartPosX, StartPosY, SizeX, SizeY, path):
+    if Layer == 1:
+        Layer1.append(emptyDict.copy())
+        x = Layer1[-1]
+    if Layer == 2:
+        Layer2.append(emptyDict.copy())
+        x = Layer2[-1]
+    x["object"] = object
+    x["positionX"] = StartPosX
+    x["positionY"] = StartPosY
+    x["sizeX"] = SizeX
+    x["sizeY"] = SizeY
+    x["path"] = path
+
+
+def addClickableObject(name, object, PositionX, PositionY, SizeX, SizeY, isMenuItem):
+    ClickableObjectsList.append(emptyDict.copy())
+    x = ClickableObjectsList[-1]
+    x["name"] = name
+    x["object"] = object
+    x["positionX"] = PositionX
+    x["positionY"] = PositionY
+    x["sizeX"] = SizeX
+    x["sizeY"] = SizeY
+    x["isMenuItem"] = isMenuItem
+
+
+def createSomething(name, asset, PosNextX, PosNextY, ScaleNextX, ScaleNextY, clickable, isMenuItem):
+    tempOB = pygame.image.load(asset).convert_alpha()
+    tempOB = pygame.transform.smoothscale(tempOB, (ScaleNextX, ScaleNextY))
+    addRenderObject(tempOB, 1, PosNextX, PosNextY,
+                    ScaleNextX, ScaleNextY, asset)
+    if clickable == True:
+        addClickableObject(name, tempOB, PosNextX,
+                           PosNextY, ScaleNextX, ScaleNextY, isMenuItem)
+
+
+# Fields
+ClickableObjectsList.clear()
+
+createSomething("1", "assets/board/temp_house.jpg", 100, 100, 200, 200, True, False)
+createSomething("2", "assets/board/temp_house.jpg", 305, 100, 200, 200, True, False)
+createSomething("3", "assets/board/temp_house.jpg", 510, 100, 200, 200, True, False)
+createSomething("4", "assets/board/temp_house.jpg", 715, 100, 200, 200, True, False)
+createSomething("5", "assets/board/temp_house.jpg", 920, 100, 200, 200, True, False)
+createSomething("6", "assets/board/temp_house.jpg", 1125, 100, 200, 200, True, False)
+createSomething("7", "assets/board/temp_house.jpg", 1330, 100, 200, 200, True, False)
+createSomething("8", "assets/board/temp_house.jpg", 1535, 100, 200, 200, True, False)
+createSomething("9", "assets/board/temp_house.jpg", 1740, 100, 200, 200, True, False)
+createSomething("10", "assets/board/temp_house.jpg", 1945, 100, 200, 200, True, False)
+createSomething("11", "assets/board/temp_house.jpg", 2150, 100, 200, 200, True, False)
+
+createSomething("12", "assets/board/temp_house.jpg", 2150, 305, 200, 200, True, False)
+createSomething("13", "assets/board/temp_house.jpg", 2150, 510, 200, 200, True, False)
+createSomething("14", "assets/board/temp_house.jpg", 2150, 715, 200, 200, True, False)
+createSomething("15", "assets/board/temp_house.jpg", 2150, 920, 200, 200, True, False)
+createSomething("16", "assets/board/temp_house.jpg",
+                2150, 1125, 200, 200, True, False)
+createSomething("17", "assets/board/temp_house.jpg",
+                2150, 1330, 200, 200, True, False)
+createSomething("18", "assets/board/temp_house.jpg",
+                2150, 1535, 200, 200, True, False)
+createSomething("19", "assets/board/temp_house.jpg",
+                2150, 1740, 200, 200, True, False)
+createSomething("20", "assets/board/temp_house.jpg",
+                2150, 1945, 200, 200, True, False)
+createSomething("21", "assets/board/temp_house.jpg",
+                2150, 2150, 200, 200, True, False)
+
+createSomething("22", "assets/board/temp_house.jpg",
+                1945, 2150, 200, 200, True, False)
+createSomething("23", "assets/board/temp_house.jpg",
+                1740, 2150, 200, 200, True, False)
+createSomething("24", "assets/board/temp_house.jpg",
+                1535, 2150, 200, 200, True, False)
+createSomething("25", "assets/board/temp_house.jpg",
+                1330, 2150, 200, 200, True, False)
+createSomething("26", "assets/board/temp_house.jpg",
+                1125, 2150, 200, 200, True, False)
+createSomething("27", "assets/board/temp_house.jpg", 920, 2150, 200, 200, True, False)
+createSomething("28", "assets/board/temp_house.jpg", 715, 2150, 200, 200, True, False)
+createSomething("29", "assets/board/temp_house.jpg", 510, 2150, 200, 200, True, False)
+createSomething("30", "assets/board/temp_house.jpg", 305, 2150, 200, 200, True, False)
+createSomething("31", "assets/board/temp_house.jpg", 100, 2150, 200, 200, True, False)
+
+createSomething("32", "assets/board/temp_house.jpg", 100, 1945, 200, 200, True, False)
+createSomething("33", "assets/board/temp_house.jpg", 100, 1740, 200, 200, True, False)
+createSomething("34", "assets/board/temp_house.jpg", 100, 1535, 200, 200, True, False)
+createSomething("35", "assets/board/temp_house.jpg", 100, 1330, 200, 200, True, False)
+createSomething("36", "assets/board/temp_house.jpg", 100, 1125, 200, 200, True, False)
+createSomething("37", "assets/board/temp_house.jpg", 100, 920, 200, 200, True, False)
+createSomething("38", "assets/board/temp_house.jpg", 100, 715, 200, 200, True, False)
+createSomething("39", "assets/board/temp_house.jpg", 100, 510, 200, 200, True, False)
+createSomething("40", "assets/board/temp_house.jpg", 100, 305, 200, 200, True, False)
 
 
 def variableRefresh():
@@ -26,6 +138,8 @@ def variableRefresh():
     while True:
         GameData = pickle.loads(client.recv(4000))
         X, Y = pygame.mouse.get_pos()
+        X = (X - OffsetX) / scale 
+        Y = (Y - OffsetY) / scale 
         sendlist = [NewMove, X, Y]
         client.send(pickle.dumps(sendlist))
     
@@ -43,113 +157,15 @@ thread.start()
 
 
 
-pygame.init()
-ScreenWidth = 1920
-ScreenHeight = 1080
-zoom = 1
-screen = pygame.display.set_mode((ScreenWidth, ScreenHeight))
+
 
 time.sleep(3)
 
-emptyDict = {}
-Layer1 = []
-Layer2 = []
-ClickableObjectsList = []
-scale = 1
 
 
-def addRenderObject(object, Layer, StartPosX, StartPosY, SizeX, SizeY, path):
-    if Layer == 1:
-        Layer1.append(emptyDict.copy())
-        x = Layer1[-1]
-    if Layer == 2:
-        Layer2.append(emptyDict.copy())
-        x = Layer2[-1]
-    x["object"] = object
-    x["positionX"] = StartPosX
-    x["positionY"] = StartPosY
-    x["sizeX"] = SizeX
-    x["sizeY"] = SizeY
-    x["path"] = path
 
 
-def addClickableObject(name, object, PositionX, PositionY, SizeX, SizeY):
-    ClickableObjectsList.append(emptyDict.copy())
-    x = ClickableObjectsList[-1]
-    x["name"] = name
-    x["object"] = object
-    x["positionX"] = PositionX
-    x["positionY"] = PositionY
-    x["sizeX"] = SizeX
-    x["sizeY"] = SizeY
 
-
-def createSomething(name, asset, PosNextX, PosNextY, ScaleNextX, ScaleNextY, clickable):
-    tempOB = pygame.image.load(asset).convert_alpha()
-    tempOB = pygame.transform.smoothscale(tempOB, (ScaleNextX, ScaleNextY))
-    addRenderObject(tempOB, 1, PosNextX, PosNextY,
-                    ScaleNextX, ScaleNextY, asset)
-    if clickable == True:
-        addClickableObject(name, tempOB, PosNextX,
-                           PosNextY, ScaleNextX, ScaleNextY)
-
-
-# Fields
-
-createSomething("1", "assets/board/temp_house.jpg", 100, 100, 200, 200, True)
-createSomething("2", "assets/board/temp_house.jpg", 305, 100, 200, 200, True)
-createSomething("3", "assets/board/temp_house.jpg", 510, 100, 200, 200, True)
-createSomething("4", "assets/board/temp_house.jpg", 715, 100, 200, 200, True)
-createSomething("5", "assets/board/temp_house.jpg", 920, 100, 200, 200, True)
-createSomething("6", "assets/board/temp_house.jpg", 1125, 100, 200, 200, True)
-createSomething("7", "assets/board/temp_house.jpg", 1330, 100, 200, 200, True)
-createSomething("8", "assets/board/temp_house.jpg", 1535, 100, 200, 200, True)
-createSomething("9", "assets/board/temp_house.jpg", 1740, 100, 200, 200, True)
-createSomething("10", "assets/board/temp_house.jpg", 1945, 100, 200, 200, True)
-createSomething("11", "assets/board/temp_house.jpg", 2150, 100, 200, 200, True)
-
-createSomething("12", "assets/board/temp_house.jpg", 2150, 305, 200, 200, True)
-createSomething("13", "assets/board/temp_house.jpg", 2150, 510, 200, 200, True)
-createSomething("14", "assets/board/temp_house.jpg", 2150, 715, 200, 200, True)
-createSomething("15", "assets/board/temp_house.jpg", 2150, 920, 200, 200, True)
-createSomething("16", "assets/board/temp_house.jpg",
-                2150, 1125, 200, 200, True)
-createSomething("17", "assets/board/temp_house.jpg",
-                2150, 1330, 200, 200, True)
-createSomething("18", "assets/board/temp_house.jpg",
-                2150, 1535, 200, 200, True)
-createSomething("19", "assets/board/temp_house.jpg",
-                2150, 1740, 200, 200, True)
-createSomething("20", "assets/board/temp_house.jpg",
-                2150, 1945, 200, 200, True)
-createSomething("21", "assets/board/temp_house.jpg",
-                2150, 2150, 200, 200, True)
-
-createSomething("22", "assets/board/temp_house.jpg",
-                1945, 2150, 200, 200, True)
-createSomething("23", "assets/board/temp_house.jpg",
-                1740, 2150, 200, 200, True)
-createSomething("24", "assets/board/temp_house.jpg",
-                1535, 2150, 200, 200, True)
-createSomething("25", "assets/board/temp_house.jpg",
-                1330, 2150, 200, 200, True)
-createSomething("26", "assets/board/temp_house.jpg",
-                1125, 2150, 200, 200, True)
-createSomething("27", "assets/board/temp_house.jpg", 920, 2150, 200, 200, True)
-createSomething("28", "assets/board/temp_house.jpg", 715, 2150, 200, 200, True)
-createSomething("29", "assets/board/temp_house.jpg", 510, 2150, 200, 200, True)
-createSomething("30", "assets/board/temp_house.jpg", 305, 2150, 200, 200, True)
-createSomething("31", "assets/board/temp_house.jpg", 100, 2150, 200, 200, True)
-
-createSomething("32", "assets/board/temp_house.jpg", 100, 1945, 200, 200, True)
-createSomething("33", "assets/board/temp_house.jpg", 100, 1740, 200, 200, True)
-createSomething("34", "assets/board/temp_house.jpg", 100, 1535, 200, 200, True)
-createSomething("35", "assets/board/temp_house.jpg", 100, 1330, 200, 200, True)
-createSomething("36", "assets/board/temp_house.jpg", 100, 1125, 200, 200, True)
-createSomething("37", "assets/board/temp_house.jpg", 100, 920, 200, 200, True)
-createSomething("38", "assets/board/temp_house.jpg", 100, 715, 200, 200, True)
-createSomething("39", "assets/board/temp_house.jpg", 100, 510, 200, 200, True)
-createSomething("40", "assets/board/temp_house.jpg", 100, 305, 200, 200, True)
 
 
 font = pygame.font.SysFont(None, 24)
@@ -169,13 +185,7 @@ while run:
             # print(i)
             if str(i["object"]).startswith("<Surface"):
                 # print("Surface")
-                screen.blit(i["object"], (i["positionX"], i["positionY"]))
-
-            # obsolete
-            if str(i["object"]).startswith("<rect"):
-                # print("Rect")
-                pygame.draw.rect(screen, i["Color"], i["object"])
-            # obsolete
+                screen.blit(i["object"], (i["positionX"] + OffsetX, i["positionY"] + OffsetY))
 
     # Render Players
     for GD in GameData["players"]:
@@ -192,7 +202,7 @@ while run:
         p = pygame.image.load(
             f"assets/players/{str(GD.nr)}.png").convert_alpha()
         p = pygame.transform.scale(p, (sx, sy))
-        screen.blit(p, (x, y))
+        screen.blit(p, (x + OffsetX, y + OffsetY))
 
     # Roll Button
     # print(f"{nr} {GameData['whosTurn']}")
@@ -206,7 +216,7 @@ while run:
                 if i["name"] == "roll":
                     flag = True
             if flag == False:
-                addClickableObject("roll", rollbutton, 1700, 900, 200, 100)
+                addClickableObject("roll", rollbutton, 1700, 900, 200, 100, True)
         else:
             # print("shouldnt RollClickObject exists")
             rollbutton = pygame.draw.rect(
@@ -215,6 +225,14 @@ while run:
                 if i["name"] == "roll":
                     index = ClickableObjectsList.index(i)
                     ClickableObjectsList.pop(index)
+    else:        
+        tempGDX = (GameData["activeMouseX"] * scale) + OffsetX
+        tempGDY = (GameData["activeMouseY"] * scale) + OffsetY
+        posYold = ((tempGDY - posYold) * 0.04) + posYold
+        posXold = ((tempGDX - posXold) * 0.04) + posXold
+        mouse = pygame.image.load(f"assets/players/cursor.png").convert_alpha()
+        mouse = pygame.transform.scale(mouse, (50, 50))
+        screen.blit(mouse, (posXold, posYold))
 
     # Render number
     img = font.render(str(GameData["roll"]), True, (255, 238, 0))
@@ -224,40 +242,16 @@ while run:
     # Keypress events
     key = pygame.key.get_pressed()
     if key[pygame.K_w] == True:
-        for y in RenderedObjectsList:
-            for i in y:
-                i["positionY"] = i["positionY"] - (10 * scale)
-
-        for i in ClickableObjectsList:
-            if i["name"] != "roll":
-                i["positionY"] = i["positionY"] - (10 * scale)
+        OffsetY = OffsetY - (10 * scale)
 
     elif key[pygame.K_s] == True:
-        for y in RenderedObjectsList:
-            for i in y:
-                i["positionY"] = i["positionY"] + (10 * scale)
-
-        for i in ClickableObjectsList:
-            if i["name"] != "roll":
-                i["positionY"] = i["positionY"] + (10 * scale)
+        OffsetY = OffsetY + (10 * scale)
 
     if key[pygame.K_a] == True:
-        for y in RenderedObjectsList:
-            for i in y:
-                i["positionX"] = i["positionX"] - (10 * scale)
-
-        for i in ClickableObjectsList:
-            if i["name"] != "roll":
-                i["positionX"] = i["positionX"] - (10 * scale)
+        OffsetX = OffsetX - (10 * scale)
 
     elif key[pygame.K_d] == True:
-        for y in RenderedObjectsList:
-            for i in y:
-                i["positionX"] = i["positionX"] + (10 * scale)
-
-        for i in ClickableObjectsList:
-            if i["name"] != "roll":
-                i["positionX"] = i["positionX"] + (10 * scale)
+        OffsetX = OffsetX + (10 * scale)
 
     if key[pygame.K_ESCAPE] == True:
         run = False
@@ -271,14 +265,24 @@ while run:
             for i in ClickableObjectsList:
                 # print(i)
                 MouseX, MouseY = pygame.mouse.get_pos()
-                if (
-                    MouseX >= i["positionX"]
-                    and MouseX <= i["positionX"] + i["sizeX"]
-                    and MouseY >= i["positionY"]
-                    and MouseY <= i["positionY"] + i["sizeY"]
-                ):
-                    print(f"Clicked {i['name']}")
-                    NewMove = f"clicked/{i['name']}"
+                if i["isMenuItem"] == True:
+                    if (
+                        MouseX >= i["positionX"]
+                        and MouseX <= i["positionX"] + i["sizeX"]
+                        and MouseY >= i["positionY"]
+                        and MouseY <= i["positionY"] + i["sizeY"]
+                    ):
+                        print(f"Clicked {i['name']}")
+                        NewMove = f"clicked/{i['name']}"
+                else:
+                    if (
+                        MouseX >= i["positionX"] + OffsetX
+                        and MouseX <= i["positionX"] + i["sizeX"] + OffsetX
+                        and MouseY >= i["positionY"] + OffsetY
+                        and MouseY <= i["positionY"] + i["sizeY"] + OffsetY
+                    ):
+                        print(f"Clicked {i['name']}")
+                        NewMove = f"clicked/{i['name']}"
 
         zoomold = zoom
         if event.type == pygame.MOUSEWHEEL:
