@@ -210,21 +210,34 @@ while run:
         if GameData["hasRolled"] == False:
             # print("roll")
             rollbutton = pygame.draw.rect(
-                screen, (255, 0, 0), pygame.Rect(1700, 900, 200, 100))
+                screen, (255, 0, 0), pygame.Rect(1700, 800, 200, 100))
             flag = False
             for i in ClickableObjectsList:
                 if i["name"] == "roll":
                     flag = True
             if flag == False:
-                addClickableObject("roll", rollbutton, 1700, 900, 200, 100, True)
+                addClickableObject("roll", rollbutton, 1700, 800, 200, 100, True)
+
         else:
             # print("shouldnt RollClickObject exists")
             rollbutton = pygame.draw.rect(
-                screen, (94, 94, 94), pygame.Rect(1700, 900, 200, 100))
+                screen, (94, 94, 94), pygame.Rect(1700, 800, 200, 100))
             for i in ClickableObjectsList:
                 if i["name"] == "roll":
                     index = ClickableObjectsList.index(i)
                     ClickableObjectsList.pop(index)
+
+
+            endTurnButton = pygame.image.load(f"assets/UI/endTurn.png").convert_alpha()
+            flag = False
+            for i in ClickableObjectsList:
+                if i["name"] == "skip":
+                    flag = True
+            if flag == False:
+                addClickableObject("skip", rollbutton, 1700, 900, 200, 100, True)
+            endTurnButton = pygame.transform.scale(endTurnButton, (200, 100))
+            screen.blit(endTurnButton, (1700, 920))
+        
     else:        
         tempGDX = (GameData["activeMouseX"] * scale) + OffsetX
         tempGDY = (GameData["activeMouseY"] * scale) + OffsetY
@@ -233,11 +246,36 @@ while run:
         mouse = pygame.image.load(f"assets/players/cursor.png").convert_alpha()
         mouse = pygame.transform.scale(mouse, (50, 50))
         screen.blit(mouse, (posXold, posYold))
+        for i in ClickableObjectsList:
+            if i["name"] == "skip":
+                index = ClickableObjectsList.index(i)
+                ClickableObjectsList.pop(index)
 
     # Render number
     img = font.render(str(GameData["roll"]), True, (255, 238, 0))
     img = pygame.transform.smoothscale(img, (70, 70))
-    screen.blit(img, (1765, 915))
+    screen.blit(img, (1765, 815))
+
+    #Render Menus
+    if GameData["activeMenuSpecs"]["MenuAtachedTo"] != 0:
+        x = 500
+        y = 500
+        for i in ClickableObjectsList:
+            if i["name"] == str(GD.position):
+                sx = i["sizeX"]
+                sy = i["sizeY"]                
+                y = i["positionY"] + sy
+                x = i["positionX"]
+        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(x + OffsetX, y + OffsetY, 200, 70 * len(GameData["activeMenuSpecs"]["MenuAtachedTo"])))
+        for i in GameData["activeMenuSpecs"]["activeMenus"]:
+            pygame.draw.rect(screen, (200, 0, 0), pygame.Rect(x + 5 + OffsetX, y + 10 + OffsetY, 190, 50))
+            img = font.render(i["OptionText"], True, (255, 238, 0))
+            img = pygame.transform.smoothscale(img, (180, 40))
+            screen.blit(img, (x + 10 + OffsetX, y + 15 + OffsetY))
+            y = y + 70
+
+
+
 
     # Keypress events
     key = pygame.key.get_pressed()

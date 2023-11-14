@@ -15,8 +15,11 @@ port = 5345
 players = []
 active_players = []
 
+activeMenus = [{"OptionText": "Buy Field", "OptionFunction": "buyField"}]
+activeMenuSpecs = {"MenuAtachedTo": "1", "activeMenus": activeMenus}
+
 GameData = {"players": players, "roll": 0,
-            "whosTurn": 1, "aktivePlayers": active_players, "hasRolled": False, "activeMouseX": 0, "activeMouseY": 0}
+            "whosTurn": 1, "aktivePlayers": active_players, "hasRolled": False, "activeMouseX": 0, "activeMouseY": 0, "activeMenuSpecs" : activeMenuSpecs}
 
 
 devicesClients = []  # Always execute
@@ -55,12 +58,15 @@ def handle(client):  # Update GameData and get the next Move for each player
                                 GameData["roll"] = random.randrange(2, 12, 1)
 
                                 i.position = i.position + GameData["roll"]
-                                GameData["HasRolled"] = True
+                                GameData["hasRolled"] = True
 
+                            if splitMessageData == "skip":
                                 if GameData["whosTurn"] == 1:
                                     GameData["whosTurn"] = 2
                                 else:
                                     GameData["whosTurn"] = 1
+                                GameData["hasRolled"] = False
+            
 
                     
 
@@ -86,7 +92,7 @@ def gameloop():
             if i.position > 40:
                 i.position = i.position - 40
                 i.money = i.money + 4000
-        print(GameData["aktivePlayers"])
+        #print(GameData["aktivePlayers"])
         time.sleep(0.2)
 
 
