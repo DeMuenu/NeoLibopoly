@@ -1,6 +1,7 @@
 import pickle
 import time
 from player import playerclass
+from assets.Board.FieldAttributes import *
 import threading
 import socket
 import random
@@ -9,17 +10,29 @@ import random
 host = "localhost"
 port = 5345
 
+FT = templateField()
 
 # only on gamestart
 
 players = []
 active_players = []
 
-activeMenus = [{"OptionText": "Buy Field", "OptionFunction": "buyField"}]
+activeMenus = [
+    {"OptionText": "buy field", "OptionFunction": "buyField"},
+    {"OptionText": "sell field", "OptionFunction": "sellField"},
+]
 activeMenuSpecs = {"MenuAtachedTo": "4", "activeMenus": activeMenus}
 
-GameData = {"players": players, "roll": 0,
-            "whosTurn": 1, "aktivePlayers": active_players, "hasRolled": False, "activeMouseX": 0, "activeMouseY": 0, "activeMenuSpecs" : activeMenuSpecs}
+GameData = {
+    "players": players,
+    "roll": 0,
+    "whosTurn": 1,
+    "aktivePlayers": active_players,
+    "hasRolled": False,
+    "activeMouseX": 0,
+    "activeMouseY": 0,
+    "activeMenuSpecs": activeMenuSpecs,
+}
 
 
 devicesClients = []  # Always execute
@@ -33,7 +46,7 @@ def handle(client):  # Update GameData and get the next Move for each player
             client.send(pickle.dumps(GameData))
             list = pickle.loads(client.recv(1024))
             message, MouseX, MouseY = list
-                        
+
             client.send(message.encode("utf-8"))
             time.sleep(0.2)
             index = devicesClients.index(client)
@@ -48,13 +61,11 @@ def handle(client):  # Update GameData and get the next Move for each player
             splitMessageCommand, splitMessageData = message.split("/")
             if splitMessageCommand == "clicked":
                 for i in GameData["players"]:
-
                     if str(i.client) == str(client):
                         print(f"{i.nr} {GameData['whosTurn']}")
                         if int(i.nr) == int(GameData["whosTurn"]):
                             if splitMessageData == "roll":
-                                random.seed(
-                                    a=(str(time.localtime())), version=2)
+                                random.seed(a=(str(time.localtime())), version=2)
                                 GameData["roll"] = random.randrange(2, 12, 1)
 
                                 i.position = i.position + GameData["roll"]
@@ -69,12 +80,10 @@ def handle(client):  # Update GameData and get the next Move for each player
 
                             else:
                                 GameData["activeMenuSpecs"]["MenuAtachedTo"] = splitMessageData
-            
-
-                    
+                                GameData["activeMenuSpecs"]["activeMenus"] = FT.getMenuOptions(i)
 
         except:
-            # 
+            #
             index = devicesClients.index(client)
             devicesClients.remove(client)
             client.close()
@@ -82,9 +91,9 @@ def handle(client):  # Update GameData and get the next Move for each player
             devices.remove(nickname)
             GameData["aktivePlayers"].remove(nickname)
             print(f"removed {nickname}")
-            
+
             # client.send(xx.encode("utf-8"))
-            #print("Error: " + str(e))
+            # print("Error: " + str(e))
             break
 
 
@@ -95,7 +104,7 @@ def gameloop():
             if i.position > 40:
                 i.position = i.position - 40
                 i.money = i.money + 4000
-        #print(GameData["aktivePlayers"])
+        # print(GameData["aktivePlayers"])
         time.sleep(0.2)
 
 
@@ -124,8 +133,7 @@ while True:
             flag = 1
 
     if flag == 0:
-        GameData["players"].append(playerclass(
-            100000, 1, str(client), Playernr))
+        GameData["players"].append(playerclass(100000, 1, str(client), Playernr))
 
     thread = threading.Thread(target=handle, args=(client,)).start()
 

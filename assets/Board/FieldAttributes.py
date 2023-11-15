@@ -14,8 +14,9 @@ class templateField:
 
     def getMenuOptions(self, buyingPlayer):
         returnList = []
+        print(int(self.position) + "  " + int(buyingPlayer.position))
         if self.owner == 0:
-            if self.position == buyingPlayer.position:
+            if int(self.position) == int(buyingPlayer.position):
                 returnList.append({"OptionText": "Buy Field", "OptionFunction": "buyField"})
 
 

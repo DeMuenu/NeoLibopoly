@@ -136,7 +136,7 @@ def variableRefresh():
         print("Communication error")
  
     while True:
-        GameData = pickle.loads(client.recv(4000))
+        GameData = pickle.loads(client.recv(5000))
         X, Y = pygame.mouse.get_pos()
         X = (X - OffsetX) / scale 
         Y = (Y - OffsetY) / scale 
@@ -257,7 +257,7 @@ while run:
     screen.blit(img, (1765, 815))
 
     #Render Menus
-    if GameData["activeMenuSpecs"]["MenuAtachedTo"] != 0:
+    if GameData["activeMenuSpecs"]["activeMenus"] != None:
         x = 500
         y = 500
         for i in ClickableObjectsList:
@@ -266,7 +266,7 @@ while run:
                 sy = i["sizeY"]                
                 y = i["positionY"] + sy
                 x = i["positionX"]
-        pygame.draw.rect(screen, (50, 50, 50), pygame.Rect(x + OffsetX, y + OffsetY, 200, 70 * len(GameData["activeMenuSpecs"]["MenuAtachedTo"])))
+        pygame.draw.rect(screen, (50, 50, 50), pygame.Rect(x + OffsetX, y + OffsetY, 200, 70 * len(GameData["activeMenuSpecs"]["activeMenus"])))
         for i in GameData["activeMenuSpecs"]["activeMenus"]:
             pygame.draw.rect(screen, (200, 0, 0), pygame.Rect(x + 5 + OffsetX, y + 10 + OffsetY, 190, 50))
             img = font.render(i["OptionText"], True, (255, 238, 0))
