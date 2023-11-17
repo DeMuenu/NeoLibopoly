@@ -1,7 +1,7 @@
 import pickle
 import time
 from player import playerclass
-from assets.Board.FieldAttributes import *
+from assets.board.FieldAttributes import *
 import threading
 import socket
 import random

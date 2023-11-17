@@ -15,7 +15,7 @@ NewMove = "Test/one"
 GameData = {}
 scale = 1
 previouslist = []
-
+flag = False
 OffsetX = 0
 OffsetY = 0
 
@@ -279,8 +279,8 @@ while run:
                 if GameData["activeMenuSpecs"]["activeMenus"]:
                     if i["name"] == GameData["activeMenuSpecs"]["activeMenus"][0]["OptionFunction"]:
                         flag = True
-            if flag == False:
-                addClickableObject("roll", rollbutton, 1700, 800, 200, 100, True)
+            #if flag == False:
+                #addClickableObject("roll", rollbutton, 1700, 800, 200, 100, True)
 
 
 
