@@ -14,6 +14,7 @@ ClickableObjectsList = [{"positionX": 0, "positionY": 0}]
 NewMove = "Test/one"
 GameData = {}
 scale = 1
+previouslist = []
 
 OffsetX = 0
 OffsetY = 0
@@ -273,6 +274,13 @@ while run:
             img = pygame.transform.smoothscale(img, (180, 40))
             screen.blit(img, (x + 10 + OffsetX, y + 15 + OffsetY))
             y = y + 70
+
+            for i in ClickableObjectsList:
+                if GameData["activeMenuSpecs"]["activeMenus"]:
+                    if i["name"] == GameData["activeMenuSpecs"]["activeMenus"][0]["OptionFunction"]:
+                        flag = True
+            if flag == False:
+                addClickableObject("roll", rollbutton, 1700, 800, 200, 100, True)
 
 
 

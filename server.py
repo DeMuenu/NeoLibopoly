@@ -18,8 +18,8 @@ players = []
 active_players = []
 
 activeMenus = [
-    {"OptionText": "buy field", "OptionFunction": "buyField"},
-    {"OptionText": "sell field", "OptionFunction": "sellField"},
+    {"OptionText": "buy field", "OptionFunction": "MENbuyField"},
+    {"OptionText": "sell field", "OptionFunction": "MENsellField"},
 ]
 activeMenuSpecs = {"MenuAtachedTo": "4", "activeMenus": activeMenus}
 
@@ -93,7 +93,7 @@ def handle(client):  # Update GameData and get the next Move for each player
             print(f"removed {nickname}")
 
             # client.send(xx.encode("utf-8"))
-            # print("Error: " + str(e))
+            #print("Error: " + str(e))
             break
 
 

@@ -14,19 +14,20 @@ class templateField:
 
     def getMenuOptions(self, buyingPlayer):
         returnList = []
-        print(int(self.position) + "  " + int(buyingPlayer.position))
+        print("Positions are:" + str(self.position) + "  " + str(buyingPlayer.position))
         if self.owner == 0:
             if int(self.position) == int(buyingPlayer.position):
                 returnList.append({"OptionText": "Buy Field", "OptionFunction": "buyField"})
+                print("menu options")
+        return returnList
 
-
-    def buyField(self, buyingPlayer):
+    def MENbuyField(self, buyingPlayer):
         if self.owner == 0:
             if buyingPlayer.money >= self.price:
                 buyingPlayer.money = buyingPlayer.money - self.price
                 self.owner = buyingPlayer.nr
 
-    def buyHouse(self, buyingPlayer):
+    def MENbuyHouse(self, buyingPlayer):
         if self.owner == buyingPlayer.nr:
             if self.position == buyingPlayer.position:
                 if all(position in buyingPlayer.owns for position in self.neededpositions):
@@ -34,7 +35,7 @@ class templateField:
                         self.houses = self.houses + 1
                         self.rent = self.rent * self.houseRentMultiplier
 
-    def landOnField(self, landedPlayer):
+    def MENlandOnField(self, landedPlayer):
         if self.owner != 0:
             if self.owner != landedPlayer.nr:
                 landedPlayer.money = landedPlayer.money - self.rent
